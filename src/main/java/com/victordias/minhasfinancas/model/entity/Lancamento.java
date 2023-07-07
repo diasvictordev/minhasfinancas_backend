@@ -15,6 +15,8 @@ import java.util.Objects;
 @Table (name = "lancamento", schema = "financas")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Lancamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
