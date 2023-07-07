@@ -5,6 +5,7 @@ import com.victordias.minhasfinancas.model.enums.TipoLancamento;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.convert.Jsr310Converters;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -37,7 +38,7 @@ public class Lancamento {
     private BigDecimal valor;
 
     @Column(name = "data_cadastro")
-    @Convert(converter = Jsr310Converters.class)
+    @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
     private LocalDate dataCadastro;
 
     @Column(name = "tipo")
