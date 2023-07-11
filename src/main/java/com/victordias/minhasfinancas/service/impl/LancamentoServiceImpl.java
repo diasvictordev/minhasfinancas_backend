@@ -2,6 +2,7 @@ package com.victordias.minhasfinancas.service.impl;
 
 import com.victordias.minhasfinancas.model.entity.Lancamento;
 import com.victordias.minhasfinancas.model.enums.StatusLancamento;
+import com.victordias.minhasfinancas.model.enums.TipoLancamento;
 import com.victordias.minhasfinancas.model.repository.LancamentoRepository;
 import com.victordias.minhasfinancas.service.LancamentoService;
 import com.victordias.minhasfinancas.service.exceptions.RegraNegocioException;
@@ -85,5 +86,20 @@ public class LancamentoServiceImpl implements LancamentoService {
     @Override
     public Optional<Lancamento> obterPorId(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BigDecimal obterSaldoPorUsuario(Long id) {
+        BigDecimal receitas = repository.obterSaldoPorTipoLancamentoeUsuario(id, TipoLancamento.RECEITA);
+        BigDecimal despesas = repository.obterSaldoPorTipoLancamentoeUsuario(id, TipoLancamento.DESPESA);
+        if(receitas == null){
+            receitas = BigDecimal.ZERO;
+        }
+        if(despesas == null){
+            despesas = BigDecimal.ZERO;
+        }
+
+        return receitas.subtract(despesas);
     }
 }
