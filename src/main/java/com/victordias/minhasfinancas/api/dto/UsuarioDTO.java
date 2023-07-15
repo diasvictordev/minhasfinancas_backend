@@ -1,12 +1,11 @@
 package com.victordias.minhasfinancas.api.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UsuarioDTO {
 
     private String nome;

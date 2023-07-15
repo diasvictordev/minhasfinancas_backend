@@ -6,6 +6,7 @@ import com.victordias.minhasfinancas.service.UsuarioService;
 import com.victordias.minhasfinancas.service.exceptions.ErroAutenticacao;
 import com.victordias.minhasfinancas.service.exceptions.RegraNegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private UsuarioRepository repository;
+    private PasswordEncoder encoder;
     @Autowired
     public UsuarioServiceImpl(UsuarioRepository repository) {
         super();
@@ -23,13 +25,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario autenticar(String email, String senha) {
+        Optional<Usuario> usuario = repository.findByEmail(email);
 
-        Optional<Usuario> usuario= repository.findByEmail(email);
-        if (!usuario.isPresent()){
-            throw new ErroAutenticacao("Usuário não encontrado para o e-mail informado!");
+        if(!usuario.isPresent()) {
+            throw new ErroAutenticacao("Usuário não encontrado para o email informado.");
         }
-        if(usuario.get().getSenha().equals(senha)){
-            throw new ErroAutenticacao("Senha inválida!");
+
+        if(!usuario.get().getSenha().equals(senha)) {
+            throw new ErroAutenticacao("Senha inválida.");
         }
         return usuario.get();
     }
